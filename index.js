@@ -11,15 +11,6 @@ var bcrypt = require('bcrypt');
 
 //var db = mongoose.createConnection('localhost','runoob');
 mongoose.connect('mongodb://localhost:27017/test');
-
-var Tasks = new mongoose.Schema({
-    title:String,
-    likes:Number,
-    url:String
-});
-
-var Task = mongoose.model('Task',Tasks);
-
 //创建user schema
 var Users = new mongoose.Schema({
     name:{
@@ -31,7 +22,7 @@ var Users = new mongoose.Schema({
 //会在数据库创建一个collection
 var User = mongoose.model('User',Users);
 //创建实体 entity
-var user = new User();
+var _user = new User();
 
 //public 文件夹为静态资源库
 app.use(express.static('public'));
@@ -47,6 +38,7 @@ app.set('view engine', 'ejs');
 //app.engine('.html', ejs.__express);
 
 app.get('/', function (req, res) {
+    //res.redirect('/login');
     res.render('index',{title:'首页'})
 });
 app.get('/signin',function(req, res){
@@ -60,39 +52,39 @@ app.get('/detail/:id', function (req, res) {
     res.render('detail',{title:'详情页'})
 });
 
-var task = new Task();
 app.post('/signin',function(req, res){
-    //console.log(req.headers['content-type'])
     var entity = {
-        title:req.body.title,
-        url:req.body.url
+        name:req.body.name,
+        password:req.body.password
     };
-    //arr.push(user);
-    //console.log(arr)
-    //console.log(user.title);
-    //console.log(user.url);
-    //返回给ajax data对象
-    res.json(entity);
 
-    user.name = entity.name;
-    user.password = entity.password;
-    //task.title = user.title;
-    //task.url = user.url;
-    //task.save(function(err){
-    //    if (err) throw err;
-    //    console.log('Task saved')
-    //});
-    User.findOne({name:user.name},function(){
+    //返回给ajax data对象
+   // res.json(entity);
+    for (var i in entity){
+        _user[i] = entity[i];
+    }
+
+    User.findOne({name:_user.name},function(err, user){
+        if (err) throw err;
+
+        if (user) {
+            console.log('user is exist');
+            //res.redirect('/login')
+        }else{
+            _user.save(function(err, user) {
+                if (err) {
+                    console.log(err)
+                }
+
+                console.log('User sign in successed.');
+            })
+        }
+
+
+        res.json(user);
+        return res.redirect('/');
 
     });
-
-
-
-    user.save(function(err){
-        if (err) throw err;
-        console.log('User sign in successed.')
-    })
-
 
 
 });
