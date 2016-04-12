@@ -40,12 +40,10 @@ app.get('/signin',function(req, res){
 app.get('/login',function(req, res){
     res.render('login',{title:'登录'})
 });
-
 app.get('/detail', function (req, res) {
    // res.render('detail',{title:'详情页'})
     res.redirect('/');
 });
-
 app.post('/signin',function(req, res){
     var entity = {
         name:req.body.name,
@@ -61,30 +59,22 @@ app.post('/signin',function(req, res){
         if (err) throw err;
         if (user) {
             console.log('user is exist');
-           // res.redirect('/')
         }else{
             _user.save(function(err, user) {
                 if (err) {
                     console.log(err)
                 }
-
                 console.log('User sign in successed.');
             })
         }
 
         res.json(_user);
-        //return res.redirect('/');
-
     });
-
-
 });
-
 
 var server = app.listen(4000, function () {
     var host = server.address().address;
     var port = server.address().port;
-
     console.log('Example app listening at http://%s:%s', host, port);
 });
 
