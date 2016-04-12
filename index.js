@@ -20,7 +20,7 @@ var Tasks = new mongoose.Schema({
 
 var Task = mongoose.model('Task',Tasks);
 
-//创建user schema (cellection)
+//创建user schema
 var Users = new mongoose.Schema({
     name:{
         unique: true,
@@ -28,7 +28,10 @@ var Users = new mongoose.Schema({
     },
     password:String
 });
-var User
+//会在数据库创建一个collection
+var User = mongoose.model('User',Users);
+//创建实体 entity
+var user = new User();
 
 //public 文件夹为静态资源库
 app.use(express.static('public'));
@@ -44,11 +47,10 @@ app.set('view engine', 'ejs');
 //app.engine('.html', ejs.__express);
 
 app.get('/', function (req, res) {
-  //  res.send('Hello World!');
     res.render('index',{title:'首页'})
 });
-app.get('/singin',function(req, res){
-    res.render('singin',{title:'注册'})
+app.get('/signin',function(req, res){
+    res.render('signin',{title:'注册'})
 });
 app.get('/login',function(req, res){
     res.render('login',{title:'登录'})
@@ -57,15 +59,11 @@ app.get('/login',function(req, res){
 app.get('/detail/:id', function (req, res) {
     res.render('detail',{title:'详情页'})
 });
-app.get('/react', function (req, res) {
-    res.send('Hello React!');
-});
 
-var arr = [];
 var task = new Task();
-app.post('/login',function(req, res){
+app.post('/signin',function(req, res){
     //console.log(req.headers['content-type'])
-    var user = {
+    var entity = {
         title:req.body.title,
         url:req.body.url
     };
@@ -73,13 +71,30 @@ app.post('/login',function(req, res){
     //console.log(arr)
     //console.log(user.title);
     //console.log(user.url);
-    res.json(user);
-    task.title = user.title;
-    task.url = user.url;
-    task.save(function(err){
-        if (err) throw err;
-        console.log('Task saved')
+    //返回给ajax data对象
+    res.json(entity);
+
+    user.name = entity.name;
+    user.password = entity.password;
+    //task.title = user.title;
+    //task.url = user.url;
+    //task.save(function(err){
+    //    if (err) throw err;
+    //    console.log('Task saved')
+    //});
+    User.findOne({name:user.name},function(){
+
     });
+
+
+
+    user.save(function(err){
+        if (err) throw err;
+        console.log('User sign in successed.')
+    })
+
+
+
 });
 
 
