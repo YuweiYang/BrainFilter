@@ -8,21 +8,14 @@ var bodyParser = require('body-parser');
 var fs = require('fs');
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
+var Users= require('./Schemas/users');
+var User = require('./modules/user');
+//var crypto = require('crypto');
 
-//var db = mongoose.createConnection('localhost','runoob');
 mongoose.connect('mongodb://localhost:27017/test');
-//创建user schema
-var Users = new mongoose.Schema({
-    name:{
-        unique: true,
-        type:String
-    },
-    password:String
-});
-//会在数据库创建一个collection
-var User = mongoose.model('User',Users);
-//创建实体 entity
-var _user = new User();
+//console.log(User)
+//在数据库链接一个collection
+//var User = mongoose.model('User',Users);
 
 //public 文件夹为静态资源库
 app.use(express.static('public'));
@@ -48,8 +41,9 @@ app.get('/login',function(req, res){
     res.render('login',{title:'登录'})
 });
 
-app.get('/detail/:id', function (req, res) {
-    res.render('detail',{title:'详情页'})
+app.get('/detail', function (req, res) {
+   // res.render('detail',{title:'详情页'})
+    res.redirect('/');
 });
 
 app.post('/signin',function(req, res){
@@ -57,19 +51,17 @@ app.post('/signin',function(req, res){
         name:req.body.name,
         password:req.body.password
     };
-
     //返回给ajax data对象
    // res.json(entity);
-    for (var i in entity){
-        _user[i] = entity[i];
-    }
+
+    //创建实体 entity
+    var _user = new User(entity);
 
     User.findOne({name:_user.name},function(err, user){
         if (err) throw err;
-
         if (user) {
             console.log('user is exist');
-            //res.redirect('/login')
+           // res.redirect('/')
         }else{
             _user.save(function(err, user) {
                 if (err) {
@@ -80,9 +72,8 @@ app.post('/signin',function(req, res){
             })
         }
 
-
-        res.json(user);
-        return res.redirect('/');
+        res.json(_user);
+        //return res.redirect('/');
 
     });
 
