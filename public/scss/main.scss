@@ -1,0 +1,18 @@
+.navbar-default{
+  background-color: RGB(142, 210, 197);
+  width:100%;
+  .navbar-brand{
+    span:first-child{
+      color:#fff;
+      font-weight: bold;
+    }
+    span:last-child{
+      color:#000;
+      font-weight: bold;
+    }
+  }
+}
+h1{
+  text-align: center;
+}
+@import "account";

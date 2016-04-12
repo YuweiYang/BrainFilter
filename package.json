@@ -1,0 +1,21 @@
+{
+  "name": "hoho",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "nevar",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^0.8.5",
+    "bower": "^1.7.9",
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
+    "express-generator": "^4.13.1",
+    "mongoose": "^4.4.12",
+    "redis": "^2.6.0-1",
+    "supervisor": "^0.10.0"
+  }
+}

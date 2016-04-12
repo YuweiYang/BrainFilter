@@ -1,0 +1,33 @@
+<% include ../layout/header.ejs %>
+<body class="account">
+<% include ../layout/nav.ejs %>
+<div>
+
+    <!--<form id='form'>-->
+        <!--<input type="text" name = 'title'  id="title">-->
+        <!--<input type="text" name = 'url'  id="url">-->
+        <!--<input type="submit" name="submit" value="Post" id="sub">-->
+    <!--</form>-->
+    <form role="form" class="">
+        <div class="form-group">
+            <label for="user">Account</label>
+            <input type="text" class="form-control" id="user"
+                   placeholder="请输入账号">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password"
+                   placeholder="请输入密码">
+        </div>
+
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+
+    <div id="show-title"></div>
+</div>
+<div class="footer">
+</div>
+
+</body>
+<script type="text/javascript" src="/javascript/login.js"></script>
+<% include ../layout/footer.ejs %>

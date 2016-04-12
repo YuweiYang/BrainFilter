@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript">
+        function uploadFile(){
+            var formData=new FormData();
+            var files=document.getElementById("files").files;
+            var file=files[0];
+            formData.append("myfile",file);
+            console.log(formData)
+            var xhr=new XMLHttpRequest();
+            xhr.open("post","index.html",true);
+            xhr.onload= function (e) {
+                if(this.status==200)
+                    document.getElementById("result").innerHTML=this.response;
+                console.log(1)
+            };
+            xhr.send(file);
+        }
+    </script>
+</head>
+<body>
+    <h1>hellov world</h1>
+    <input type="file" id="files" name="file" />
+    <input type="button" value="上传文件" onclick="uploadFile();" />
+    <div id="result"></div>
+</body>
+</html>
