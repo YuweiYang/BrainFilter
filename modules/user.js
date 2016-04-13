@@ -4,8 +4,5 @@
 var mongoose = require('mongoose');
 var Users = require('../Schemas/users');
 var User = mongoose.model('User',Users);
-//添加实例方法
-User.methods = {
-    fn:function(){}
-};
+
 module.exports = User;

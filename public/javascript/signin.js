@@ -11,11 +11,14 @@ $('form').on('submit',function(event){
             password:$('#password').val()
         },
         success: function (data){
-           // var p1 = $('<p></p>');
+            var li = $('<li class="pull-right"></li>');
+            var a = $('<a href="javascript:void(0);"></a>');
             //var p2 = $('<p></p>');
             $('#user').val('');
             $('#password').val('');
           //  console.log(data)
+            a.html('Hello ' + data.name).appendTo(li);
+            li.appendTo($(".navbar-nav"));
         }
     });
 

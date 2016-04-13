@@ -5,8 +5,14 @@
     </div>
     <div>
         <ul class="nav navbar-nav">
-            <li><a href="/login">Log In</a></li>
-            <li><a href="/signin">Sign In</a></li>
+
+            <li id = "sign-in"><a href="/signin">Sign In</a></li>
+            <li id = "log-modal-btn">
+                <a data-toggle="modal" data-target="#myModal">登录</a>
+            </li>
+            <% if (user==1){ %>
+            <li><a href="javascript:void(0)">退出登录</a></li>
+            <% } %>
         </ul>
     </div>
 </nav>

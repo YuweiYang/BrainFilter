@@ -16,6 +16,15 @@ var Users = new mongoose.Schema({
 Users.static = {
     fn:function(){}
 };
+//添加实例方法
+Users.methods = {
+    comparePassword : function(_password,callback){
+        bcrypt.compare(_password,this.password,function(err,isMatch){
+            if (err) return callback(err)
+            callback('null',isMatch);
+        })
+    }
+};
 
 //优先于save执行本中间件
 Users.pre('save',function(next){
