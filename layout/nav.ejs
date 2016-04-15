@@ -1,17 +1,16 @@
 <nav class="navbar navbar-default" role="navigation">
     <div class="navbar-header">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/">
             <span>Brain</span><span>Filter</span></a>
     </div>
     <div>
         <ul class="nav navbar-nav">
 
-            <li id = "sign-in"><a href="/signin">Sign In</a></li>
+            <li id = "register"><a href="/register">注册</a></li>
+            <% if (title == '首页'){ %>
             <li id = "log-modal-btn">
                 <a data-toggle="modal" data-target="#myModal">登录</a>
             </li>
-            <% if (user==1){ %>
-            <li><a href="javascript:void(0)">退出登录</a></li>
             <% } %>
         </ul>
     </div>

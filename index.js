@@ -29,11 +29,7 @@ app.use(session({
     },
     resave: false,
     saveUninitialized: true
-
-
 }));
-//app.use(connect.session({ secret: 'PhucDetBech', key: 'PhucDetBech' ,cookie: { maxAge: 20000}}));
-
 
 
 //public 文件夹为静态资源库
@@ -48,10 +44,24 @@ app.set('views',__dirname + '/views');
 app.set('view engine', 'ejs');
 //使用html作为模板引擎
 //app.engine('.html', ejs.__express);
+//判断session中的user中间件
+app.use(function(req, res, next){
+    var _user = req.session.user;
+   if (_user){
+       app.locals.user = _user;
+   }
+    return next();
+});
+
+
 
 app.get('/', function (req, res) {
     //res.redirect('/login');
-    res.render('index',{title:'首页',user:'admin'})
+    res.render('index',{title:'首页',user:'admin'});
+    //req.session = null;
+    //var sess = req.session;
+    //console.log(sess);
+    //console.log(sess.id);
 });
 app.post('/log',function (req, res){
     var entity = {
@@ -59,7 +69,6 @@ app.post('/log',function (req, res){
         password :req.body.password
     };
     var _user = new User(entity);
-
     User.findOne({name:_user.name},function(err, user){
         if (err) throw err;
         if (!user) {
@@ -70,11 +79,13 @@ app.post('/log',function (req, res){
         }
         user.comparePassword(_user.password,function(err,isMatch){
             if (err) {
-                console.log(err);
+              //  console.log(err);
             }
             if (isMatch) {
                 res.json(_user);
-                console.log("password is not macthed.");
+                var sess = req.session;
+                //console.log(sess.cookie);
+                console.log("password is macthed.");
             }else{
                 res.json({
                     title:"password id not macthed."
@@ -88,8 +99,8 @@ app.post('/log',function (req, res){
     });
 
 });
-app.get('/signin',function(req, res){
-    res.render('signin',{title:'注册'})
+app.get('/register',function(req, res){
+    res.render('register',{title:'注册'})
 });
 app.get('/login',function(req, res){
     res.render('login',{title:'登录'})
@@ -98,38 +109,64 @@ app.get('/detail', function (req, res) {
    // res.render('detail',{title:'详情页'})
     res.redirect('/');
 });
-app.post('/signin',function(req, res){
-    var entity = {
-        name:req.body.name,
-        password:req.body.password
-    };
-    //返回给ajax data对象
-   // res.json(entity);
+app.post('/register',function(req, res){
+    var pass1 = req.body.password;
+    var pass2 = req.body.password2;
+    if (pass1 != pass2){
+        res.json({title:'两次输入的密码不一致'})
 
-    //创建实体 entity
-    var _user = new User(entity);
+    }else{
+        var entity = {
+            name:req.body.name,
+            password:req.body.password
+        };
+        var _user = new User(entity);
 
-    User.findOne({name:_user.name},function(err, user){
-        if (err) throw err;
-        if (user) {
-            console.log('user is exist');
-        }else{
-            _user.save(function(err, user) {
-                if (err) {
-                    console.log(err)
-                }
-                console.log('User sign in successed.');
-            })
-        }
+        User.findOne({name:_user.name},function(err, user){
+            if (err) throw err;
+            if (user) {
+                console.log('user is exist');
+                res.redirect('/register')
+            }else{
+                _user.save(function(err, user) {
+                    if (err) {
+                        console.log(err)
+                    }
+                    console.log('User sign in successed.');
+                });
+                res.redirect('/')
+            }
 
-        res.json(_user);
-    });
+            //res.json(_user);
+        });
+
+    }
+
+});
+app.get('/addairticle',function(req, res){
+    res.render('addairticle',{title:'添加文章'})
+
 });
 
+
+//404页面
+app.get('/*', function(req, res){
+    res.render('404', {
+        title: '404 Not Found'
+    });
+  //  res.writeHead(404,{"Content-Type":"text/html"});
+   // res.write('404 NOT FOUND');
+});
 var server = app.listen(4000, function () {
     var host = server.address().address;
     var port = server.address().port;
     console.log('Example app listening at http://%s:%s', host, port);
 });
+
+
+
+
+
+
 
 
