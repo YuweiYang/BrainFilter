@@ -22,6 +22,7 @@ mongoose.connect(dbUrl);
 var User = mongoose.model('User',Users);
 
 app.use(session({
+
     secret:'PhucDetBech',
     cookie: {
         maxAge  :   60 * 1000 //1分钟后过期
@@ -50,18 +51,15 @@ app.use(function(req, res, next){
    if (_user){
        app.locals.user = _user;
    }
+    console.log(app.locals.user);
     return next();
 });
 
 
 
 app.get('/', function (req, res) {
-    //res.redirect('/login');
-    res.render('index',{title:'首页',user:'admin'});
-    //req.session = null;
-    //var sess = req.session;
-    //console.log(sess);
-    //console.log(sess.id);
+    res.render('index',{title:'首页',user:app.locals.user});
+
 });
 app.post('/log',function (req, res){
     var entity = {
@@ -79,12 +77,12 @@ app.post('/log',function (req, res){
         }
         user.comparePassword(_user.password,function(err,isMatch){
             if (err) {
-              //  console.log(err);
+                console.log(err);
             }
             if (isMatch) {
+                req.session.user = _user.name;
                 res.json(_user);
-                var sess = req.session;
-                //console.log(sess.cookie);
+                console.log(req.session.user);
                 console.log("password is macthed.");
             }else{
                 res.json({

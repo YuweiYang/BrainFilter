@@ -3,6 +3,9 @@
 <body>
 <% include ../layout/nav.ejs %>
 <div>
+    <% if (user){%>
+    <p><%=user%></p>
+    <%}%>
 
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel" aria-hidden="true">
