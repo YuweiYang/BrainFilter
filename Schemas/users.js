@@ -10,7 +10,10 @@ var Users = new mongoose.Schema({
         unique: true,
         type:String
     },
-    password:String
+    password:String,
+    avatar:String,
+    logTimes:Number
+
 });
 //给schema添加静态方法
 Users.static = {
@@ -19,8 +22,20 @@ Users.static = {
 //添加实例方法
 Users.methods = {
     comparePassword : function(_password,callback){
+        user = this;
+        //bcrypt.genSalt(SALT_WORK_FACTOR,function(err,salt){
+        //    if (err) return next(err);
+        //    bcrypt.hash(user.password,salt,function(err,hash){
+        //        if (err) return next(err);
+        //        user.password = hash;
+        //        console.log(user.password);
+        //        console.log(user.name);
+        //       // next();
+        //
+        //    });
+        //});
         bcrypt.compare(_password,this.password,function(err,isMatch){
-            if (err) return callback(err)
+            if (err) return callback(err);
             callback('null',isMatch);
         })
     }
@@ -29,15 +44,19 @@ Users.methods = {
 //优先于save执行本中间件
 Users.pre('save',function(next){
     user = this;
-    bcrypt.genSalt(SALT_WORK_FACTOR,function(err,salt){
-        if (err) return next(err);
-        bcrypt.hash(user.password,salt,function(err,hash){
+    if(user.logTimes == 0){
+        bcrypt.genSalt(SALT_WORK_FACTOR,function(err,salt){
             if (err) return next(err);
-            user.password = hash;
-            next();
+            bcrypt.hash(user.password,salt,function(err,hash){
+                if (err) return next(err);
+                user.password = hash;
+                console.log(user.password);
+                user.logTimes++;
+                next();
 
-        });
-    })
+            });
+        })
+    }
 });
 
 

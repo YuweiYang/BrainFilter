@@ -25,7 +25,6 @@ mongoose.connect(dbUrl);
 var User = mongoose.model('User',Users);
 
 app.use(session({
-
     secret:'PhucDetBech',
     cookie: {
         maxAge  :   60 * 1000 //1分钟后过期
@@ -55,10 +54,8 @@ app.use(function(req, res, next){
    if (_user){
        app.locals.user = _user;
    }
-  //  console.log(app.locals.user);
     return next();
 });
-
 
 
 app.get('/', function (req, res) {
@@ -66,16 +63,31 @@ app.get('/', function (req, res) {
 
 });
 
-
 //上传图片 并且图片保存到本地
 app.post('/ava',multipart(),function(req, res){
 
     var filename = req.files.avatar.originalFilename || path.basename(req.files.avatar.path);
     var targetPath = path.dirname(__filename) + '/image_repository/avatar/' + filename;
     fs.createReadStream(req.files.avatar.path).pipe(fs.createWriteStream(targetPath));
-    console.log(req.files);
-    console.log(filename);
-    console.log(targetPath),
+    //console.log(req.files);
+    var _name = req.session.user;
+    //用module方法保存数据
+    User.update({name:_name},{$set:{avatar:targetPath}},function(err){
+        if (err) throw err;
+    });
+    //用entity方法保存数据,效果相同
+
+    //User.findOne({name:_name},function(err, doc){
+    //    if (err) throw err;
+    //    if (doc){
+    //        doc.set({avatar:targetPath});
+    //        doc.save();
+    //    }else{
+    //        console.log('no user');
+    //    }
+    //});
+
+
 
     res.json({
         codetype : 200,
@@ -109,15 +121,14 @@ app.post('/log',function (req, res){
                 console.log(req.session.user);
                 console.log("password is macthed.");
             }else{
+                //console.log(_user.password);
                 res.json({
-                    title:"password id not macthed."
+                    title:"password is not macthed."
                 });
                 console.log("password is not macthed.");
             }
 
         });
-
-        //res.json(_user);
     });
 
 });
@@ -154,6 +165,8 @@ app.post('/register',function(req, res){
                 console.log('user is exist');
                 res.redirect('/register')
             }else{
+                req.session.user = _user.name;
+                _user.logTimes = 0;
                 _user.save(function(err, user) {
                     if (err) {
                         console.log(err)
@@ -162,8 +175,6 @@ app.post('/register',function(req, res){
                 });
                 res.redirect('/')
             }
-
-            //res.json(_user);
         });
 
     }
