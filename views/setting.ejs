@@ -1,0 +1,20 @@
+<% include ../layout/header.ejs %>
+<body class="account">
+<% include ../layout/nav.ejs %>
+<div>
+    <div class="ava">
+        <form id="form" enctype="multipart/form-data" method="post" action="javascript:;">
+            <p><%=user%></p>
+            <img class="avatar img-thumbnail" src="/images/ava.png">
+            <input type="file" id="update-avatar" name="avatar" multiple="multiple">
+            <button type="button" class="btn btn-primary" id="upload">上传头像</button>
+        </form>
+
+    </div>
+</div>
+<div class="footer">
+</div>
+
+</body>
+<script type="text/javascript" src="/javascript/setting.js"></script>
+<% include ../layout/footer.ejs %>

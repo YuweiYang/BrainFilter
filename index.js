@@ -10,6 +10,9 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 var Users= require('./Schemas/users');
 var User = require('./modules/user');
+var path = require('path');
+var multipart = require('connect-multiparty');
+
 //var mongoStroe = require('connect-mongo')(express);
 //var crypto = require('crypto');
 //var connect = require('connect');
@@ -39,6 +42,7 @@ app.use(express.static('public'));
 app.use(bodyParser.json({limit: '1mb'}));
 //解析url
 app.use(bodyParser.urlencoded({extended: false}));
+//app.use(bodyParser({ keepExtensions: true, uploadDir: './public/images' }));
 
 //使用ejs作为模板引擎
 app.set('views',__dirname + '/views');
@@ -51,7 +55,7 @@ app.use(function(req, res, next){
    if (_user){
        app.locals.user = _user;
    }
-    console.log(app.locals.user);
+  //  console.log(app.locals.user);
     return next();
 });
 
@@ -60,6 +64,26 @@ app.use(function(req, res, next){
 app.get('/', function (req, res) {
     res.render('index',{title:'首页',user:app.locals.user});
 
+});
+
+
+//上传图片 并且图片保存到本地
+app.post('/ava',multipart(),function(req, res){
+
+    var filename = req.files.avatar.originalFilename || path.basename(req.files.avatar.path);
+    var targetPath = path.dirname(__filename) + '/image_repository/avatar/' + filename;
+    fs.createReadStream(req.files.avatar.path).pipe(fs.createWriteStream(targetPath));
+    console.log(req.files);
+    console.log(filename);
+    console.log(targetPath),
+
+    res.json({
+        codetype : 200,
+        msg:{url:'http://' + req.headers.host + '/' + filename}
+    });
+    //var _img = req.files;
+   // console.log(_img);
+    //res.json(_img);
 });
 app.post('/log',function (req, res){
     var entity = {
@@ -95,6 +119,10 @@ app.post('/log',function (req, res){
 
         //res.json(_user);
     });
+
+});
+app.get('/setting', function (req, res) {
+    res.render('setting',{title:'设置',user:app.locals.user});
 
 });
 app.get('/register',function(req, res){
