@@ -23,18 +23,6 @@ Users.static = {
 //添加实例方法
 Users.methods = {
     comparePassword : function(_password,callback){
-        user = this;
-        //bcrypt.genSalt(SALT_WORK_FACTOR,function(err,salt){
-        //    if (err) return next(err);
-        //    bcrypt.hash(user.password,salt,function(err,hash){
-        //        if (err) return next(err);
-        //        user.password = hash;
-        //        console.log(user.password);
-        //        console.log(user.name);
-        //       // next();
-        //
-        //    });
-        //});
         bcrypt.compare(_password,this.password,function(err,isMatch){
             if (err) return callback(err);
             callback('null',isMatch);
@@ -58,7 +46,5 @@ Users.pre('save',function(next){
         })
     }
 });
-
-
 //打包Users
 module.exports = Users;

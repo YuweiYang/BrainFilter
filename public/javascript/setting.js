@@ -11,7 +11,7 @@ $('#upload').on('click',function(){
         type:'POST',
         url:'/ava',
         data:fd,
-        asynv:false,
+        async:false,
         processData: false,
         contentType: false,
         success:function(data){

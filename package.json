@@ -24,6 +24,7 @@
     "express-generator": "^4.13.1",
     "express-session": "^1.13.0",
     "formidable": "^1.0.17",
+    "logger": "0.0.1",
     "mongoose": "^4.4.12",
     "redis": "^2.6.0-1",
     "session": "^0.1.0",
