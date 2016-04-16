@@ -5,13 +5,17 @@
     </div>
     <div>
         <ul class="nav navbar-nav">
-
-            <li id = "register"><a href="/register">注册</a></li>
-            <% if (title == '首页'){ %>
-            <li id = "log-modal-btn">
-                <a data-toggle="modal" data-target="#myModal">登录</a>
-            </li>
-            <% } %>
+            <% if(user){%>
+                <li id = "user_name"><a href="javascript:;">Hello <%=user%> !</a></li>
+                <li id = "sign_out"><a href="javascript:;">退出登录</a></li>
+            <%}else{%>
+                <li id = "register"><a href="/register">注册</a></li>
+                <% if (title == '首页'){ %>
+                    <li id = "log-modal-btn"><a data-toggle="modal" data-target="#myModal">登录</a></li>
+                <%}else{%>
+                    <li id = "sign_in"><a href="/">登录</a></li>
+                <%}%>
+            <%}%>
         </ul>
     </div>
 </nav>

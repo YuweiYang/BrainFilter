@@ -12,6 +12,7 @@ var Users = new mongoose.Schema({
     },
     password:String,
     avatar:String,
+    new:Number,//判断是否为刚注册的新用户
     logTimes:Number
 
 });
@@ -44,16 +45,15 @@ Users.methods = {
 //优先于save执行本中间件
 Users.pre('save',function(next){
     user = this;
-    if(user.logTimes == 0){
+    if(user.new == 0){
         bcrypt.genSalt(SALT_WORK_FACTOR,function(err,salt){
             if (err) return next(err);
             bcrypt.hash(user.password,salt,function(err,hash){
                 if (err) return next(err);
                 user.password = hash;
                 console.log(user.password);
-                user.logTimes++;
+                user.new = 1;
                 next();
-
             });
         })
     }

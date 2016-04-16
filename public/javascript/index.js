@@ -11,17 +11,40 @@ $(function(){
                 name : $('#user').val(),
                 password : $('#password').val()
             },success : function (data){
-                //var li = $('<li class="pull-right"></li>');
-                //var a = $('<a href="javascript:void(0);"></a>');
+                var li = $('<li id = "user_name"></li>');
+                var li2 = $('<li id = "sign_out"></li>');
+                var a = $('<a href="javascript:;"></a>');
+                var a2 = $('<a href="javascript:;">退出登录</a>');
                 $('#user').val('');
                 $('#password').val('');
-                //a.html('Hello ' + data.name).appendTo(li);
-                //li.appendTo($(".navbar-nav"));
-                //$('#log-modal-btn').remove();
-
-                console.log(data);
+                a.html('Hello ' + data.name + ' !').appendTo(li);
+                a2.appendTo(li2);
+                $('#register').remove();
+                $('#log-modal-btn').remove();
+                ($('.navbar-nav')).append(li).append(li2);
             }
         });
-       // return false;
+    });
+
+    $('.navbar-nav').on('click','#sign_out',function(){
+        $.ajax({
+            type:'POST',
+            url:'/signout',
+            dataType:'json',
+            data:1,
+            success:function(data){
+                console.log(data.title);
+                var li = $('<li id = "register"></li>');
+                var li2 = $('<li id = "log-modal-btn"></li>');
+                var a = $('<a href="/register">注册</a>');
+                var a2 = $('<a data-toggle="modal" data-target="#myModal">登录</a>');
+                li.append(a);
+                li2.append(a2);
+                ($('.navbar-nav')).append(li).append(li2);
+                $('#sign_out').remove();
+                $('#user_name').remove();
+            }
+        })
     })
+
 });

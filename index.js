@@ -117,6 +117,7 @@ app.post('/log',function (req, res){
             }
             if (isMatch) {
                 req.session.user = _user.name;
+                _user.logTimes++;
                 res.json(_user);
                 console.log(req.session.user);
                 console.log("password is macthed.");
@@ -143,8 +144,9 @@ app.get('/login',function(req, res){
     res.render('login',{title:'登录'})
 });
 app.get('/detail', function (req, res) {
-   // res.render('detail',{title:'详情页'})
+    //res.render('detail',{title:'详情页',user:app.locals.user});
     res.redirect('/');
+    //res.end('detail')
 });
 app.post('/register',function(req, res){
     var pass1 = req.body.password;
@@ -166,7 +168,8 @@ app.post('/register',function(req, res){
                 res.redirect('/register')
             }else{
                 req.session.user = _user.name;
-                _user.logTimes = 0;
+                _user.new = 0;
+                _user.logTimes = 1;
                 _user.save(function(err, user) {
                     if (err) {
                         console.log(err)
@@ -180,6 +183,16 @@ app.post('/register',function(req, res){
     }
 
 });
+app.post('/signout',function(req, res){
+    req.session.user = null;
+    app.locals.user = null;
+    res.json({title:'signout'});
+    console.log(req.session)
+});
+
+
+
+
 app.get('/addairticle',function(req, res){
     res.render('addairticle',{title:'添加文章'})
 
