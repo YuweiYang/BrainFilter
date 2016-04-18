@@ -8,8 +8,11 @@ var bcrypt = require('../node_modules/bcrypt');
 var Users= require('../Schemas/users');
 var User = require('../modules/user');
 var multipart = require('connect-multiparty');
+var url = require('url');
+var path = require('path');
+var fs = require('fs');
 
-module.exports = function(app){
+module.exports = function(app, pathname){
 
     app.get('/', function (req, res) {
         res.render('index',{title:'首页',user:app.locals.user});
@@ -19,14 +22,24 @@ module.exports = function(app){
 //上传图片 并且图片保存到本地
     app.post('/ava',multipart(),function(req, res){
         var filename = req.files.avatar.originalFilename || path.basename(req.files.avatar.path);
-        var targetPath = path.dirname(__filename) + '/image_repository/avatar/' + filename;
+        //var targetPath = path.dirname(__filename) + '/image_repository/avatar/' + filename;
+        var targetPath = pathname + '/image_repository/avatar/' + filename;
         fs.createReadStream(req.files.avatar.path).pipe(fs.createWriteStream(targetPath));
+        var _url = '/avatar/' + filename;
+        console.log(_url);
+        console.log(targetPath);
         var _name = req.session.user;
         //用module方法保存数据
-        User.update({name:_name},{$set:{avatar:targetPath}},function(err){
+        User.update({name:_name},{$set:{avatar:_url}},function(err){
             if (err) throw err;
-        });
 
+
+        });
+        res.json({
+            codetype : 200,
+            msg:{url:'http://' + req.headers.host + '/' + filename},
+            url:_url
+        });
         //用entity方法保存数据,效果相同
         //User.findOne({name:_name},function(err, doc){
         //    if (err) throw err;
@@ -37,10 +50,11 @@ module.exports = function(app){
         //        console.log('no user');
         //    }
         //});
-        res.json({
-            codetype : 200,
-            msg:{url:'http://' + req.headers.host + '/' + filename}
-        });
+        //res.json({
+        //    codetype : 200,
+        //    msg:{url:'http://' + req.headers.host + '/' + filename},
+        //    url:_url
+        //});
         //var _img = req.files;
         // console.log(_img);
         //res.json(_img);
@@ -86,14 +100,14 @@ module.exports = function(app){
 
     });
     app.get('/register',function(req, res){
-        res.render('register',{title:'注册'})
+        res.render('register',{title:'注册',user:''})
     });
     app.get('/login',function(req, res){
         res.render('login',{title:'登录'})
     });
     app.get('/detail', function (req, res) {
         //res.render('detail',{title:'详情页',user:app.locals.user});
-        res.redirect('/');
+        res.redirect('http://www.baidu.com');
         //res.end('detail')
     });
     app.post('/register',function(req, res){
@@ -137,6 +151,11 @@ module.exports = function(app){
         res.json({title:'signout'});
         console.log(req.session)
     });
+    //app.get('/avatar/*',function(req, res){
+    //    //fs()
+    //    console.log
+    //    console.log(req.url);
+    //});
 
 
 

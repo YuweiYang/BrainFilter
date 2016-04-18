@@ -8,14 +8,11 @@
     color: #000;
     font-weight: bold; }
 
-h1 {
-  text-align: center; }
-
-.account form {
+.account .register-form {
   width: 500px;
   margin: 0 auto;
   display: block; }
-  .account form button {
+  .account .register-form button {
     width: 100%;
     display: block;
     background-color: #f2f2f2; }
@@ -39,5 +36,26 @@ h1 {
     top: 0;
     left: 50%;
     margin-left: -100px; }
+
+.index .content {
+  width: 1100px;
+  margin: 0 auto; }
+  .index .content .sidebar {
+    width: 200px;
+    float: left; }
+  .index .content .main {
+    width: 850px;
+    margin-left: 250px; }
+
+.header-nav {
+  width: 1100px;
+  margin: 0 auto; }
+  .header-nav .user-info {
+    display: inline-block; }
+    .header-nav .user-info .avatar-small {
+      width: 40px;
+      height: 40px;
+      display: inline-block;
+      margin-top: 5px; }
 
 /*# sourceMappingURL=main.css.map */

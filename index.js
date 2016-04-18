@@ -19,7 +19,7 @@ var dbUrl = 'mongodb://localhost:27017/test';
 //var mongoStroe = require('connect-mongo')(express);
 //var crypto = require('crypto');
 //var connect = require('connect');
-
+var pathname = path.dirname(__filename);
 
 mongoose.connect(dbUrl);
 
@@ -48,6 +48,8 @@ if ('development' == app.get('env')){
 
 //public 文件夹为静态资源库
 app.use(express.static('public'));
+
+app.use(express.static('image_repository'));
 //解析json 限制大小1mb
 app.use(bodyParser.json({limit: '1mb'}));
 //解析url
@@ -67,7 +69,7 @@ app.use(function(req, res, next){
 });
 
 //路由
-require('./router/router')(app);
+require('./router/router')(app,pathname);
 
 var server = app.listen(port, function () {
     var host = server.address().address;

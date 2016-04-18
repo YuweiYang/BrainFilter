@@ -13,7 +13,11 @@ var Users = new mongoose.Schema({
     password:String,
     avatar:String,
     new:Number,//判断是否为刚注册的新用户
-    logTimes:Number
+    logTimes:Number,
+    role:{
+        type:Number,
+        default:1
+    }
 
 });
 //给schema添加静态方法

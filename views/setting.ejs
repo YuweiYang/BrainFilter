@@ -4,8 +4,11 @@
 <div>
     <div class="ava">
         <form id="form" enctype="multipart/form-data" method="post" action="javascript:;">
-            <img class="avatar img-thumbnail" src="/images/ava.png">
+            <!--<img class="avatar img-thumbnail" src="/avatar/star.png">-->
+
+            <img id="avatar-image" class="avatar img-thumbnail" src="" onerror="javascript:this.src='/images/logo.jpg';">
             <input type="file" id="update-avatar" name="avatar" multiple="multiple">
+
             <button type="button" class="btn btn-primary" id="upload">上传头像</button>
         </form>
 
