@@ -17,13 +17,35 @@ var Users = new mongoose.Schema({
     role:{
         type:Number,
         default:1
+    },//用户权限
+    meta: {
+        createAt: {
+            type: Date,
+            default: Date.now()
+        },
+        updateAt: {
+            type: Date,
+            default: Date.now()
+        }
     }
 
 });
 //给schema添加静态方法
 Users.static = {
-    fn:function(){}
+    fetch: function(cb) {
+        return this
+            .find({})
+            .sort('meta.updateAt')
+            .exec(cb)
+    },
+    findById: function(id, cb) {
+        return this
+            .findOne({_id: id})
+            .exec(cb)
+    }
 };
+
+
 //添加实例方法
 Users.methods = {
     comparePassword : function(_password,callback){
@@ -38,6 +60,7 @@ Users.methods = {
 Users.pre('save',function(next){
     user = this;
     if(user.new == 0){
+        this.meta.createAt = this.meta.updateAt = Date.now();
         bcrypt.genSalt(SALT_WORK_FACTOR,function(err,salt){
             if (err) return next(err);
             bcrypt.hash(user.password,salt,function(err,hash){
@@ -48,6 +71,8 @@ Users.pre('save',function(next){
                 next();
             });
         })
+    }else{
+        this.meta.updateAt = Date.now();
     }
 });
 //打包Users

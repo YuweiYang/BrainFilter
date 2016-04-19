@@ -160,7 +160,10 @@ module.exports = function(app, pathname){
 
 
 
-    app.get('/addairticle',function(req, res){
+    app.get('/addairticle/:id',function(req, res){
+
+        //根据id查询数据库获取对应文章
+        //传到页面上
         res.render('addairticle',{title:'添加文章'})
 
     });
