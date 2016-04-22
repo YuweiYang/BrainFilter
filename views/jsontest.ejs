@@ -2,8 +2,8 @@
 
 <body class="index">
 <% include ../layout/nav.ejs %>
-<div>
-    <button>click me</button>
+<div style="margin-left:200px;">
+
     <div id="airticle"></div>
 
     <form>
@@ -24,39 +24,52 @@
                 }
         )});
 
-    $('button').on('click',function(){
-        $.ajax({
-            type:'POST',
-            url:'/jsontest',
-            data:'givemesomedata',
-            dataType:'json',
-            success:function(data, status){
-                console.log(status);
-                var so = JSON.parse(data);
-                so.map(function(item){
-                    $('<p>'+ item.name + '<p>').appendTo($('#airticle'))
-                })
-            }
-        })
+
+    $.ajax({
+        type:'POST',
+        url:'/jsontest',
+        data:'givemesomedata',
+        dataType:'json',
+        success:function(data, status){
+            console.log(status);
+            var so = JSON.parse(data);
+            so.map(function(item){
+                $('<p>'+ item.name + '<p>').appendTo($('#airticle'));
+            })
+        }
     })
+
 
     $('form').on('submit',function(){
         $.ajax({
-            url:'/submitjson'
+            url:'/submitjson',
             type:'POST',
             data:{
                 name:$('#name').val(),
                 sex:$('#sex').val(),
-                sex:$('#age').val()
+                age:$('#age').val()
             },
-            dataType:'text',
-            success:function(data,status){
-                $('<p>'+ data + '<p>').appendTo($('#airticle'))
-            }
+            dataType:'text'
 
-        })
+        }).done(cb).done(cb2);
 
         return false;
+
+        function cb(data,status){
+            if (status == 'success'){
+                $('#airticle p').remove();
+                var datalist = JSON.parse(data);
+                datalist.map(function(item){
+                    $('#airticle').append($('<p>'+ item.name + '<p>'))
+                });
+                $('#name').val('');
+                $('#sex').val('');
+                $('#age').val('');
+            }
+        }
+        function cb2(data,status){
+            console.log(status);
+        }
     })
 
 </script>

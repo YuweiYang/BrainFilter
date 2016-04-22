@@ -160,16 +160,6 @@ module.exports = function(app, pathname){
         res.render('jsontest',{title:'testjson',user:app.locals.user})
     });
     app.post('/jsontest',function(req, res){
-        //if(req.body.data == 'givemesomedata'){
-         //   console.log(req.body);
-        //}
-
-
-    //    var data = JSON.stringify(jsondata);
-       // console.log(typeof (data));
-       // res.send(jsondata);
-       // res.json(data);
-
         fs.readFile(pathname + '/public/data.json','utf-8',function(err,data){
             if (err) throw err;
             console.log(typeof(data));
@@ -177,7 +167,61 @@ module.exports = function(app, pathname){
         });
     });
     app.post('/submitjson',function(req, res){
-        fs.writeFile(pathname + '/public/data.json','utf-8',function (err, data){})
+
+        var fn1 = new Promise(function (resolve, reject){
+            fs.readFile(pathname + '/public/data.json','utf-8',function(err, data){
+                if (err) throw err;
+
+                var info = JSON.parse(data);
+
+                var newData = {};
+                for (var i in req.body){
+                    newData[i] = req.body[i];
+                }
+                info.push(newData);
+                resolve(info);
+            })
+        });
+        var fn2 = function(info){
+            var infos = JSON.stringify(info,null,4);
+                fs.writeFile(pathname + '/public/data.json',infos,function (err, data){
+                    if (err) throw err;
+                    console.log(1);
+                    res.json(info);
+                });
+            return 'ok';
+        };
+        fn1.then(function(info){
+            return fn2(info);
+        }).then(function(data){
+            console.log(data);
+        }).catch(console.log.bind(console));
+
+
+
+
+        //fs.readFile(pathname + '/public/data.json','utf-8',function(err,data){
+        //    if (err) throw err;
+        //
+        //    var info = JSON.parse(data);
+        //
+        //    var newData = {};
+        //    for (var i in req.body){
+        //        newData[i] = req.body[i];
+        //    }
+        //    info.push(newData);
+        //    var infos = JSON.stringify(info,null,4);
+        //
+        //    fs.writeFile(pathname + '/public/data.json',infos,function (err, data){
+        //        if (err) throw err;
+        //
+        //        res.json(info);
+        //
+        //    })
+        //
+        //});
+
+
 
     });
 
@@ -199,6 +243,24 @@ module.exports = function(app, pathname){
         //  res.writeHead(404,{"Content-Type":"text/html"});
         // res.write('404 NOT FOUND');
     });
+
+
+    //登录验证中间件
+    function signinRequired(req, res, next){
+        var user = req.session.user;
+        if (!user){
+            return res.redirect('/');
+        }
+        next();
+    }
+
+    function adminRequired(req, res, next){
+        var user = req.session.user;
+        if(user.role<10){
+            return res.redirect('/');
+        }
+        next();
+    }
 
 
 };
