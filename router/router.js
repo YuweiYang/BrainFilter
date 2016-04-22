@@ -156,8 +156,30 @@ module.exports = function(app, pathname){
     //    console.log
     //    console.log(req.url);
     //});
+    app.get('/jsontest',function(req, res){
+        res.render('jsontest',{title:'testjson',user:app.locals.user})
+    });
+    app.post('/jsontest',function(req, res){
+        //if(req.body.data == 'givemesomedata'){
+         //   console.log(req.body);
+        //}
 
 
+    //    var data = JSON.stringify(jsondata);
+       // console.log(typeof (data));
+       // res.send(jsondata);
+       // res.json(data);
+
+        fs.readFile(pathname + '/public/data.json','utf-8',function(err,data){
+            if (err) throw err;
+            console.log(typeof(data));
+            res.json(data)
+        });
+    });
+    app.post('/submitjson',function(req, res){
+        fs.writeFile(pathname + '/public/data.json','utf-8',function (err, data){})
+
+    });
 
 
     app.get('/addairticle/:id',function(req, res){

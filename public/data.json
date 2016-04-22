@@ -1,0 +1,22 @@
+[
+  {
+    "name":"nevar",
+    "sex":"male",
+    "age":23
+  },
+  {
+    "name":"admin",
+    "sex":"female",
+    "age":24
+  },
+  {
+    "name":"yyw",
+    "sex":"male",
+    "age":90
+  },
+  {
+    "name":"amy",
+    "sex":"male",
+    "age":26
+  }
+]

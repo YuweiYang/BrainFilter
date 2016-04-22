@@ -1,0 +1,63 @@
+<% include ../layout/header.ejs %>
+
+<body class="index">
+<% include ../layout/nav.ejs %>
+<div>
+    <button>click me</button>
+    <div id="airticle"></div>
+
+    <form>
+        <input type="text" id="name" name="name" maxlength="10"/>
+        <input type="text" id="sex" name="sex" maxlength="10"/>
+        <input type="text" id="age" name="age" maxlength="10"/>
+        <input type="submit" name="submit" value="post">
+    </form>
+
+</div>
+</body>
+
+<% include ../layout/footer.ejs %>
+<script>
+    $(function () {
+        $('#myModal').modal({
+                    show: false
+                }
+        )});
+
+    $('button').on('click',function(){
+        $.ajax({
+            type:'POST',
+            url:'/jsontest',
+            data:'givemesomedata',
+            dataType:'json',
+            success:function(data, status){
+                console.log(status);
+                var so = JSON.parse(data);
+                so.map(function(item){
+                    $('<p>'+ item.name + '<p>').appendTo($('#airticle'))
+                })
+            }
+        })
+    })
+
+    $('form').on('submit',function(){
+        $.ajax({
+            url:'/submitjson'
+            type:'POST',
+            data:{
+                name:$('#name').val(),
+                sex:$('#sex').val(),
+                sex:$('#age').val()
+            },
+            dataType:'text',
+            success:function(data,status){
+                $('<p>'+ data + '<p>').appendTo($('#airticle'))
+            }
+
+        })
+
+        return false;
+    })
+
+</script>
+<!--<script src="/javascript/index.js"></script>-->

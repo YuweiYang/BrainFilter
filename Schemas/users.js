@@ -18,16 +18,16 @@ var Users = new mongoose.Schema({
         type:Number,
         default:1
     },//用户权限
-    meta: {
-        createAt: {
-            type: Date,
-            default: Date.now()
-        },
-        updateAt: {
-            type: Date,
-            default: Date.now()
-        }
-    }
+    //meta: {
+    //    createAt: {
+    //        type: Date,
+    //        default: Date.now()
+    //    },
+    //    updateAt: {
+    //        type: Date,
+    //        default: Date.now()
+    //    }
+    //}
 
 });
 //给schema添加静态方法
