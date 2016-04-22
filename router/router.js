@@ -22,7 +22,6 @@ module.exports = function(app, pathname){
 //上传图片 并且图片保存到本地
     app.post('/ava',multipart(),function(req, res){
         var filename = req.files.avatar.originalFilename || path.basename(req.files.avatar.path);
-        //var targetPath = path.dirname(__filename) + '/image_repository/avatar/' + filename;
         var targetPath = pathname + '/image_repository/avatar/' + filename;
         fs.createReadStream(req.files.avatar.path).pipe(fs.createWriteStream(targetPath));
         var _url = '/avatar/' + filename;
@@ -168,35 +167,45 @@ module.exports = function(app, pathname){
     });
     app.post('/submitjson',function(req, res){
 
-        var fn1 = new Promise(function (resolve, reject){
+        var promise = new Promise(function (resolve, reject){
             fs.readFile(pathname + '/public/data.json','utf-8',function(err, data){
                 if (err) throw err;
+                if (data){
+                    var info = JSON.parse(data);
 
-                var info = JSON.parse(data);
+                    var newData = {};
+                    for (var i in req.body){
+                        newData[i] = req.body[i];
+                    }
+                    info.push(newData);
+                    resolve(info);
+                }else{
+                    reject('I can\'t get data');
 
-                var newData = {};
-                for (var i in req.body){
-                    newData[i] = req.body[i];
                 }
-                info.push(newData);
-                resolve(info);
+                return promise;
             })
         });
-        var fn2 = function(info){
+        var callback = function(info){
             var infos = JSON.stringify(info,null,4);
-                fs.writeFile(pathname + '/public/data.json',infos,function (err, data){
+                fs.writeFile(pathname + '/public/data.json',infos,'utf-8',function (err, data){
                     if (err) throw err;
-                    console.log(1);
                     res.json(info);
                 });
             return 'ok';
         };
+        //fn1.then(function(info){
+        //    fn2(info);
+        //},function(data){
+        //    console.log(data)
+        //});
         fn1.then(function(info){
-            return fn2(info);
+            return callback(info);
         }).then(function(data){
-            console.log(data);
-        }).catch(console.log.bind(console));
-
+            console.log(data)
+        }).catch(function(err){
+            console.log(err);
+        });
 
 
 
