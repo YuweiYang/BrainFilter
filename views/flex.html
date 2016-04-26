@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>flex</title>
+    <style type="text/css">
+        #box{
+            display: flex;
+            width:800px;
+            padding:20px;
+            /*height:400px;*/
+            flex-direction: row;
+            /*flex-wrap: wrap-reverse;*/
+            flex-flow: row nowrap;
+            justify-content: flex-start;
+            background-color: #0f0f0f;
+            align-items: baseline;
+            align-content: space-around;
+        }
+        .box{
+
+            color: #fff;
+            line-height:100px;
+            height:100px;
+            width:100px;
+            /*margin-bottom:10px;*/
+            /*flex-grow: 1;*/
+        }
+        .box1{
+            background-color:#00d4b4;
+            flex:1 2 300px;
+            /*flex-grow: 0;*/
+            /*flex-shrink: 0;*/
+            /*height:100px;*/
+            /*line-height:100px;*/
+        }
+        .box2{
+            background-color:#00B7FF;
+            flex:1 1 400px;
+            /*flex-grow: 1;*/
+            /*flex-shrink: 1;*/
+            /*height:120px;*/
+            /*line-height:120px;*/
+        }
+        .box3{
+            background-color:#1b6d85;
+            flex:1 1 400px;
+            /*flex-grow: 1;*/
+            /*flex-shrink: 1;*/
+            /*height:200px;*/
+            /*line-height:200px;*/
+        }
+        .box4{
+            background-color:#2F6FAD;
+            flex:1 2 300px;
+            /*flex-grow: 0;*/
+            /*flex-shrink: 0;*/
+            /*height:150px;*/
+            /*line-height:150px;*/
+        }
+    </style>
+</head>
+<body>
+    <div id="box">
+        <div class="box box1">1</div>
+        <div class="box box2">2</div>
+        <div class="box box3">3</div>
+        <div class="box box4">4</div>
+        <!--<div class="box box4">4</div>-->
+        <!--<div class="box box1">5</div>-->
+        <!--<div class="box box2">6</div>-->
+        <!--<div class="box box3">7</div>-->
+        <!--<div class="box box4">8</div>-->
+
+    </div>
+
+</body>
+</html>
