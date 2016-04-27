@@ -5,7 +5,7 @@ var url = require('url');
 var qs = require('querystring');
 var path = require('path');
 
-var queryUrl = "http://localhost:8888/index/bb?name=bigbear&memo=helloworld#a" ;
+var queryUrl = "http://localhost:8888/index/bb?name=bigbear&memo=helloworld#a";
 console.log(typeof url.parse(queryUrl)) ;
 console.log(url.parse(queryUrl)) ;
 
