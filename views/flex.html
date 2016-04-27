@@ -13,7 +13,7 @@
             /*flex-wrap: wrap-reverse;*/
             flex-flow: row nowrap;
             justify-content: flex-start;
-            background-color: #0f0f0f;
+            /*background-color: #0f0f0f;*/
             align-items: baseline;
             align-content: space-around;
         }
@@ -23,42 +23,36 @@
             line-height:100px;
             height:100px;
             width:100px;
-            /*margin-bottom:10px;*/
-            /*flex-grow: 1;*/
+
         }
         .box1{
             background-color:#00d4b4;
             flex:1 2 300px;
-            /*flex-grow: 0;*/
-            /*flex-shrink: 0;*/
-            /*height:100px;*/
-            /*line-height:100px;*/
         }
         .box2{
             background-color:#00B7FF;
             flex:1 1 400px;
-            /*flex-grow: 1;*/
-            /*flex-shrink: 1;*/
-            /*height:120px;*/
-            /*line-height:120px;*/
         }
         .box3{
             background-color:#1b6d85;
             flex:1 1 400px;
-            /*flex-grow: 1;*/
-            /*flex-shrink: 1;*/
-            /*height:200px;*/
-            /*line-height:200px;*/
         }
         .box4{
             background-color:#2F6FAD;
             flex:1 2 300px;
-            /*flex-grow: 0;*/
-            /*flex-shrink: 0;*/
-            /*height:150px;*/
-            /*line-height:150px;*/
         }
+        #div{
+            width:0;
+            height:0;
+            border-top:10px solid #fc4d30;
+            border-right:10px solid transparent;
+            border-left:10px solid transparent;
+        }
+
+
     </style>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
 </head>
 <body>
     <div id="box">
@@ -73,6 +67,35 @@
         <!--<div class="box box4">8</div>-->
 
     </div>
+    <div id="div"></div>
+<script>
+    $(function(){
+        $('#box').click(function(){
+            $(this).load('../buffertest.js')
+        })
+    });
+    function tri(n){
+        var arr = [1];
+        if (n <= 1){
+            console.log(arr);
+        }else{
+            console.log(arr);
+            for(var j = 0; j<n-1;j++){
+                var sum = [];
+                var arr1 = arr.concat();
+                var arr2 = arr.concat();
+                arr1.unshift(0);
+                arr2.push(0);
+                for(var i = 0;i< arr1.length;i++){
+                    sum.push(arr1[i]+arr2[i]);
+                }
+                console.log(sum);
+                arr = sum.concat();
+            }
+        }
+    }
+    tri(6)
 
+</script>
 </body>
 </html>
