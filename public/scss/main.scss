@@ -19,3 +19,17 @@ h1{
 @import "account";
 @import "index";
 @import "header";
+
+@mixin xxx($color:#fc4d30){
+  width:1000px;
+  margin:20px;
+  background-color:$color;
+}
+
+
+#box{
+  @include xxx;
+}
+#box2{
+  @include xxx($color:#000)
+}

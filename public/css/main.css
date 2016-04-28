@@ -58,4 +58,14 @@
       display: inline-block;
       margin-top: 5px; }
 
+#box {
+  width: 1000px;
+  margin: 20px;
+  background-color: #fc4d30; }
+
+#box2 {
+  width: 1000px;
+  margin: 20px;
+  background-color: #000; }
+
 /*# sourceMappingURL=main.css.map */

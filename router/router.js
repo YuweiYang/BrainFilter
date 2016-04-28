@@ -15,6 +15,7 @@ var fs = require('fs');
 module.exports = function(app, pathname){
 
     app.get('/', function (req, res) {
+        console.log(req.header.toString());
         res.render('index',{title:'首页',user:app.locals.user});
 
     });

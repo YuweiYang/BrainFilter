@@ -65,6 +65,7 @@
         <!--<div class="box box2">6</div>-->
         <!--<div class="box box3">7</div>-->
         <!--<div class="box box4">8</div>-->
+        <p>vdvdv</p>
 
     </div>
     <div id="div"></div>
@@ -95,6 +96,27 @@
         }
     }
     tri(6)
+
+
+    var str = '    this is a little 3444454566745 test1.    ';
+//    var newStr = str.replace(/^(\s|\u00A0)+/g,'');
+    var newStr = str.replace(/^(\s)+|(\s)+$/g,'');
+    console.log(newStr)
+
+var str = '    this is a little 3444454566745 test1.    ';
+function trim(str){
+    return (str.replace(/^(\s|\xA0)+|(\s|\xA0)+$/g,''))
+}
+trim(str);
+
+
+
+
+
+
+
+
+
 
 </script>
 </body>
